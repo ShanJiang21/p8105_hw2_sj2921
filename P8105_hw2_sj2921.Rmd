@@ -7,12 +7,13 @@ output: github_document
 
 ## Problem 1
 
-* import data from csv file and do some cleaning.
-```{r 1.1, Result = FALSE}
+- import data from csv file and do some cleaning.
+```{r 1.1, message = FALSE}
 library(tidyverse)
-NYC_Transit = 
+  
+  NYC_Transit = 
   read_csv(file = "./dataset_import/NYC_Transit_Subway_Entrance_And_Exit_Data.csv")
-NYC_Transit = janitor::clean_names(NYC_Transit)
+  NYC_Transit = janitor::clean_names(NYC_Transit)
 
 ## Retain line, station, name, station latitude / longitude, routes served, entry, vending, entrance type, and ADA compliance.
 
@@ -20,7 +21,7 @@ NYC_df <- select(NYC_Transit, line, station_name, station_latitude, station_long
 
 ```
 
-* Convert the entry variable from character (YES vs NO) to a logical variable
+- Convert the entry variable from character (YES vs NO) to a logical variable
 ```{r 1.2}
 # The conversion to logical variable.
 NYC_Transit$vending <- 
@@ -35,6 +36,7 @@ Besides, the subset also contains if there is entry or vending for each station,
 1. Import data from selected sheet;
 2. Use `Janitor::` as efficient way to clean variable names;
 3. Adopt the select to retain the variables in need.
+After doing this, the data is basically readable, however, it's not clean enough.
 
 * **Dimension**: there are 20 column as variables and 1868 rows as observations in the dataset.
  

@@ -107,10 +107,18 @@ trw_df$`sports_balls` <-
 
 * import precipitation data in 2016 & 2017 
 ```{r 2.2}
+# Read 2017 precipitation data, add a variable as year 
 Precp_17 <- readxl::read_excel(path =   "./dataset_import/HealthyHarborWaterWheelTotals2017-9-26.xlsx",sheet = 3, skip = 1)
 
 Precp_17 <- Precp_17 %>% 
   filter(Precp_17$Total != "NA", Precp_17$Month != "NA") %>% 
+  mutate(year = 2017)
+
+# Read 2016 precipitation data, add a variable as year 
+Precp_16 <- readxl::read_excel(path =   "./dataset_import/HealthyHarborWaterWheelTotals2017-9-26.xlsx",sheet = 4, skip = 1 )
+
+Precp_16 <- Precp_16 %>% 
+  filter(Precp_16$Total != "NA", Precp_16$Month != "NA") %>% 
   mutate(year = 2017)
 
 

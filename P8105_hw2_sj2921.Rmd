@@ -107,21 +107,36 @@ trw_df$`sports_balls` <-
 
 * import precipitation data in 2016 & 2017 
 ```{r 2.2}
-# Read 2017 precipitation data, add a variable as year 
-Precp_17 <- readxl::read_excel(path =   "./dataset_import/HealthyHarborWaterWheelTotals2017-9-26.xlsx",sheet = 3, skip = 1)
-
-Precp_17 <- Precp_17 %>% 
-  filter(Precp_17$Total != "NA", Precp_17$Month != "NA") %>% 
+# Read 2017 precipitation data, clean names of variable, add a variable as year 2017
+Precp_17 <- 
+  readxl::read_excel(path =   "./dataset_import/HealthyHarborWaterWheelTotals2017-9-26.xlsx",sheet = 3, skip = 1) %>% 
+  janitor::clean_names(Precp_17) %>% 
+  filter(total != "NA", month != "NA") %>% 
   mutate(year = 2017)
 
-# Read 2016 precipitation data, add a variable as year 
-Precp_16 <- readxl::read_excel(path =   "./dataset_import/HealthyHarborWaterWheelTotals2017-9-26.xlsx",sheet = 4, skip = 1 )
+# Read 2016 precipitation data, clean names of variable, add a variable as year 2016
+Precp_16 <- readxl::read_excel(path =   "./dataset_import/HealthyHarborWaterWheelTotals2017-9-26.xlsx",sheet = 4, skip = 1 ) %>% 
+  janitor::clean_names() %>% 
+  filter(total != "NA", month != "NA") %>% 
+  mutate(year = 2016)
 
-Precp_16 <- Precp_16 %>% 
-  filter(Precp_16$Total != "NA", Precp_16$Month != "NA") %>% 
-  mutate(year = 2017)
+## combine datasets and rename the variable:
+Precp <- right_join(Precp_17, Precp_16, by = "month") %>% 
+  
+names(Precp)[3] <- "Year1"  
+names(Precp)[5] <- "Year2" 
+
+names(Precp)[2] <- "Precipitation1"
+names(Precp)[4] <- "Precipitation2"
+
+# convert month to a character variable (the variable month.name is built into R and should be useful).
+Precp$month <- as.character(month.name[Precp$month])
+
+# Combine the new data frame organized.
+Precp_df <- 
+  Precp %>% 
+  select(month, Year1, Precipitation1, Year2, Precipitation2)  
 
 
-
-
+```
 

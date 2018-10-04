@@ -2,29 +2,27 @@
 title: "p8105_hw2_sj2921"
 author: "Shan Jiang"
 date: "10/3/2018"
-output: html_document
+output: git_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+## Problem 1
+
+* import data from csv file and do some cleaning.
+```{r 1.1 }
+library(tidyverse)
+NYC_Transit = 
+  read_csv(file = "./dataset_import/NYC_Transit_Subway_Entrance_And_Exit_Data.csv")
+NYC_Transit = janitor::clean_names(NYC_Transit)
+
+## retain line, station, name, station latitude / longitude, routes served, entry, vending, entrance type, and ADA compliance.
+NYC_df <- select(NYC_Transit, line, station_name, station_latitude, station_longitude, route1:route11, entry, exit_only, vending, entrance_type, ada)
 ```
 
-## R Markdown
+* Convert the entry variable from character (YES vs NO) to a logical variable
+```{r 1.2}
+NYC_Transit$vending <- ifelse(NYC_Transit$vending == "YES", TRUE, FALSE)
+NYC_Transit$entry <- ifelse(NYC_Transit$entry == "YES",TRUE, FALSE)
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
 ```
+*  **brief summary of data**: this subset contains the basic information in NYC metro, includes the Subway line(street/avenue), station name, the latitude and longtitude of each station, and the routes existed. Besides, the subset also contains if there is entry or vending for each station, the type of entrance and if is compliant with Americans with Disabilities Act.
 
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

@@ -2,7 +2,7 @@
 title: "p8105_hw2_sj2921"
 author: "Shan Jiang"
 date: "10/3/2018"
-output: git_document
+output: github_document
 ---
 
 ## Problem 1
@@ -14,15 +14,26 @@ NYC_Transit =
   read_csv(file = "./dataset_import/NYC_Transit_Subway_Entrance_And_Exit_Data.csv")
 NYC_Transit = janitor::clean_names(NYC_Transit)
 
-## retain line, station, name, station latitude / longitude, routes served, entry, vending, entrance type, and ADA compliance.
+## Retain line, station, name, station latitude / longitude, routes served, entry, vending, entrance type, and ADA compliance.
+
 NYC_df <- select(NYC_Transit, line, station_name, station_latitude, station_longitude, route1:route11, entry, exit_only, vending, entrance_type, ada)
+
 ```
 
 * Convert the entry variable from character (YES vs NO) to a logical variable
 ```{r 1.2}
-NYC_Transit$vending <- ifelse(NYC_Transit$vending == "YES", TRUE, FALSE)
-NYC_Transit$entry <- ifelse(NYC_Transit$entry == "YES",TRUE, FALSE)
-
+# The conversion to logical variable.
+NYC_Transit$vending <- 
+  ifelse(NYC_Transit$vending == "YES", TRUE, FALSE)
+NYC_Transit$entry <- 
+  ifelse(NYC_Transit$entry == "YES",TRUE, FALSE)
 ```
-*  **brief summary of data**: this subset contains the basic information in NYC metro, includes the Subway line(street/avenue), station name, the latitude and longtitude of each station, and the routes existed. Besides, the subset also contains if there is entry or vending for each station, the type of entrance and if is compliant with Americans with Disabilities Act.
+* **brief summary of data**: this dataset contains the basic information in NYC metro, includes the Subway line(street/avenue), station name, the latitude and longtitude of each station, and the routes existed. 
+Besides, the subset also contains if there is entry or vending for each station, the type of entrance and if is compliant with Americans with Disabilities Act.
+
+* **data cleaning steps**: 
+1. Import data from selected sheet;
+2. Use `Janitor::` as efficient way to clean variable names;
+3. Dimension: there are 20 column as variables and 1868 rows as observations in the dataset.
+ 
 

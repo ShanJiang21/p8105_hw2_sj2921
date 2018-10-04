@@ -61,7 +61,7 @@ Percent <- (nrow(No_vd) / sum(NYC_df$entry))
 2. Also, through filtering we can know that there are `r nrow(ADA_no)` stations which are ADA compliant.
 3. The proportion of station entrances/exits without vending allow entrance is `r Percent`.
 
-Reformat data as NYC_tidy_data
+* Reformat data as NYC_tidy_data
 ```{r 1.4}
 # Make wide data turn to long data, route number and route name are distinct variables.
 NYC_tidy_data <- NYC_df %>% 
@@ -82,7 +82,22 @@ ADA_compliant <- NYC_tidy_data %>%
 
 ```
 1. `r nrow(route_A)` distinct stations serve the A train;
-2. Of the stations that serve the A train, `r nrow(ADA_compliant)` are ADA compliant 
+2. Of the stations that serve the A train, `r nrow(ADA_compliant)` are ADA compliant.
+
+## Problem 2
+* Read and clean the Mr. Trash Wheel sheet:
+```{r 2.1}
+# Load the sheet and specify the range to omit the notes.
+library(tidyverse)
+library(readxl)
+trw_df <- readxl::read_excel(path =   "./dataset_import/HealthyHarborWaterWheelTotals2017-9-26.xlsx",sheet = 1, range = "A2:N258")
+
+# omit rows that do not include dumpster-specific data
+trw_df <- trw_df %>% 
+  filter(trw_df$Dumpster != "NA") 
+
+```
+
 
 
 

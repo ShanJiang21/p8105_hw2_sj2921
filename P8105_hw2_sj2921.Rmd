@@ -170,9 +170,17 @@ Percentage <-
   filter(response == "Excellent"  | response == "Very good" | response == "Good" | response == "Fair" | response == "Poor") %>% 
   spread(key = response, value = data_value) %>% 
   janitor::clean_names() %>% 
-  mutate(Ex_good = excellent + very_good)
+# create a new variable showing the proportion of responses that were “Excellent” or “Very Good”
+  mutate(Ex_good = excellent + very_good) 
 
-# 
+# unique locations: Every state is represented in the dataset as there are 51 distinct states in the dataframe.
+brfss_df %>% 
+   distinct(., locationabbr, .keep_all = TRUE)
+
+
+
+
+# In 2002, what is the median of the “Excellent” response value
 ```
 
 

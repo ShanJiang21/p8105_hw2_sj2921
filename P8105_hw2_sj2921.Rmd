@@ -34,7 +34,7 @@ Besides, the subset also contains if there is entry or vending for each station,
 
 * **Data cleaning steps**: 
 1. Import data from selected sheet;
-2. Use `Janitor::` as efficient way to clean variable names;
+2. Use `Janitor:: clean names` as efficient way to clean variable names;
 3. Adopt the select to retain the variables in need.
 After doing this, the data is basically readable, however, it's not clean enough.
 
@@ -55,19 +55,32 @@ nrow(ADA_no)
 No_vd <- NYC_df %>% 
    filter(NYC_df$vending == FALSE) %>%
    filter(entry == TRUE) 
-nrow(No_vd)
-
 Percent <- (nrow(No_vd) / sum(NYC_df$entry))
+Percent
 ```
 1. According to above, there are `r stations` distinct stations in NYC. 
 2. Also, through filtering we can know that there are `r nrow(ADA_no)` stations which are ADA compliant.
-3. The proportion of station entrances/exits without vending allow entrance is `r percent(Percent)`.
+3. The proportion of station entrances/exits without vending allow entrance is `r Percent`.
+
+Reformat data
+```{r 1.4}
+# Make wide data turn to long data, route number and route name are distinct variables.
+NYC_tidy_data <- 
+    gather(NYC_df, key = route_name, value = route_number, 5:15) %>%         distinct(NYC_tidy_data, line, station_name, number_test,.keep_all = TRUE)
+
+# 60 distinct stations serve the A train
+route_A <- 
+  NYC_tidy_data %>%
+  filter(route_number == "A") 
+nrow(route_A)
 
 
-# Reformat data so that route number and route name are distinct variables. 
-
-
-# distinct stations serve the A train
 # Of the stations that serve the A train,  are ADA compliant
+
+
+```
+2. 'r nrow(route_A)' distinct stations serve the A train;
+3. 
+
 
 

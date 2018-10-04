@@ -8,7 +8,7 @@ output: github_document
 ## Problem 1
 
 * import data from csv file and do some cleaning.
-```{r 1.1 }
+```{r 1.1, Result = FALSE}
 library(tidyverse)
 NYC_Transit = 
   read_csv(file = "./dataset_import/NYC_Transit_Subway_Entrance_And_Exit_Data.csv")
@@ -28,12 +28,14 @@ NYC_Transit$vending <-
 NYC_Transit$entry <- 
   ifelse(NYC_Transit$entry == "YES",TRUE, FALSE)
 ```
-* **brief summary of data**: this dataset contains the basic information in NYC metro, includes the Subway line(street/avenue), station name, the latitude and longtitude of each station, and the routes existed. 
+* **Brief summary of data**: this dataset contains the basic information in NYC metro, includes the Subway line(street/avenue), station name, the latitude and longtitude of each station, and the routes existed. 
 Besides, the subset also contains if there is entry or vending for each station, the type of entrance and if is compliant with Americans with Disabilities Act.
 
-* **data cleaning steps**: 
+* **Data cleaning steps**: 
 1. Import data from selected sheet;
 2. Use `Janitor::` as efficient way to clean variable names;
-3. Dimension: there are 20 column as variables and 1868 rows as observations in the dataset.
+3. Adopt the select to retain the variables in need.
+
+* **Dimension**: there are 20 column as variables and 1868 rows as observations in the dataset.
  
 

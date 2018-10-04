@@ -49,38 +49,40 @@ stations <- nrow(distinct(NYC_df, line, station_name))
 ADA_no <- NYC_df %>% 
    filter(NYC_df$ada == TRUE) %>%
    distinct(line, station_name) 
-nrow(ADA_no)
+
 
 # The propotion of station entrances/exits without vending allow entrance is 3.94%
 No_vd <- NYC_df %>% 
    filter(NYC_df$vending == FALSE) %>%
    filter(entry == TRUE) 
 Percent <- (nrow(No_vd) / sum(NYC_df$entry))
-Percent
 ```
 1. According to above, there are `r stations` distinct stations in NYC. 
 2. Also, through filtering we can know that there are `r nrow(ADA_no)` stations which are ADA compliant.
 3. The proportion of station entrances/exits without vending allow entrance is `r Percent`.
 
-Reformat data
+Reformat data as NYC_tidy_data
 ```{r 1.4}
 # Make wide data turn to long data, route number and route name are distinct variables.
-NYC_tidy_data <- 
-    gather(NYC_df, key = route_name, value = route_number, 5:15) %>%         distinct(NYC_tidy_data, line, station_name, number_test,.keep_all = TRUE)
+NYC_tidy_data <- NYC_df %>% 
+    gather(key = route_name, value = route_number, 5:15) 
 
 # 60 distinct stations serve the A train
 route_A <- 
   NYC_tidy_data %>%
+  distinct(line, station_name, station_name,.keep_all = TRUE) %>% 
   filter(route_number == "A") 
-nrow(route_A)
 
-
-# Of the stations that serve the A train,  are ADA compliant
+# Of the stations that serve the A train, 17 are ADA compliant
+ADA_compliant <- NYC_tidy_data %>%
+  filter(route_number == "A") %>% 
+  distinct(line, station_name, station_name,.keep_all = TRUE)%>% 
+  filter(ada == TRUE) 
 
 
 ```
-2. 'r nrow(route_A)' distinct stations serve the A train;
-3. 
+1. `r nrow(route_A)` distinct stations serve the A train;
+2. Of the stations that serve the A train, `r nrow(ADA_compliant)` are ADA compliant 
 
 
 

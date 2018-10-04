@@ -11,9 +11,9 @@ output: github_document
 ```{r 1.1, message = FALSE}
 library(tidyverse)
   
-  NYC_Transit <- 
-  read_csv(file = "./dataset_import/NYC_Transit_Subway_Entrance_And_Exit_Data.csv")
-  NYC_Transit <- janitor::clean_names(NYC_Transit)
+NYC_Transit <- 
+    read_csv(file = "./dataset_import/NYC_Transit_Subway_Entrance_And_Exit_Data.csv")
+    NYC_Transit <- janitor::clean_names(NYC_Transit)
 
 ## Retain line, station, name, station latitude / longitude, routes served, entry, vending, entrance type, and ADA compliance.
 
@@ -102,8 +102,7 @@ trw_df <- trw_df %>%
 # rounds the number of sports balls to the nearest integer and converts the result to an integer variable (using as.integer)
 trw_df$`sports_balls` <- 
   as.integer(round(trw_df$`sports_balls`, digits = 0))
-# calculate the median of sportsballs
-  Meidan_ball <- median(trw_df$`sports_balls`)
+
 ```
 
 * import precipitation data in 2016 & 2017 
@@ -137,15 +136,32 @@ Precp$month <- as.character(month.name[Precp$month])
 Precp_df <- 
   Precp %>% 
   select(month, Year1, Precipitation1, Year2, Precipitation2) 
+ 
+sum_17_precp <- sum(Precp_df$Precipitation1, na.rm = TRUE)
 
+# calculate the median of sportsballs
+  Median_ball <- trw_df %>% 
+    filter(year == "2002")
+    median(trw_df$`sports_balls`)
 ```
-
 *key variables*
 - 
 * The number of observations  in 2016 is precpitation data `r nrow(Precp_16)`;
 * The number of observations in 2017 precpitation data is  `r nrow(Precp_17)`;
+* The total precipitation in 2017 is  `r sum_17_precp `
 
-* The total precipitation in 2017 is  `r sum(Precp_df$Precipitation1)`
 
-* The median number of sports balls in a dumpster in 2016 is `r Meidan_ball`.
+##Problem 3
+```{r}
+library(p8105.datasets)
+
+# Import the BFRSS data 
+brfss_df <- 
+  brfss_smart2010 %>% 
+    janitor::clean_names() %>% 
+    select(-class, -topic, -question, -sample_size, -confidence_limit_low:-geo_location ) 
+
+## Response indicating  the proportion of subjects with each response
+```
+
 

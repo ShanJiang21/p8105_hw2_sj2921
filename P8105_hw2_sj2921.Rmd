@@ -24,9 +24,9 @@ NYC_df <- select(NYC_Transit, line, station_name, station_latitude, station_long
 - Convert the entry variable from character (YES vs NO) to a logical variable
 ```{r 1.2}
 # The conversion to logical variable.
-NYC_Transit$vending <- 
+NYC_df$vending <- 
   ifelse(NYC_Transit$vending == "YES", TRUE, FALSE)
-NYC_Transit$entry <- 
+NYC_df$entry <- 
   ifelse(NYC_Transit$entry == "YES",TRUE, FALSE)
 ```
 * **Brief summary of data**: this dataset contains the basic information in NYC metro, includes the Subway line(street/avenue), station name, the latitude and longtitude of each station, and the routes existed. 
@@ -40,4 +40,27 @@ After doing this, the data is basically readable, however, it's not clean enough
 
 * **Dimension**: there are 20 column as variables and 1868 rows as observations in the dataset.
  
+* Question (Problem1.1):
+```{r 1.3}
+# Distinct stations in the dataset as of 465;
+nrow(distinct(NYC_df, line, station_name))
+
+# stations are ADA compliant as of 84;
+ADA_no <- NYC_df %>% 
+   filter(NYC_df$ada == TRUE) %>%
+   distinct(line, station_name) 
+nrow(ADA_no)
+
+# The propotion of station entrances/exits without vending allow entrance is 3.94%
+No_vd <- NYC_df %>% 
+   filter(NYC_df$vending == FALSE) %>%
+   filter(entry == TRUE) 
+nrow(No_vd)
+
+Percent <- (nrow(No_vd) / sum(NYC_df$entry))
+
+
+
+```
+
 

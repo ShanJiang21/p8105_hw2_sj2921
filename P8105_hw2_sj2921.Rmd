@@ -102,6 +102,7 @@ trw_df <- trw_df %>%
 # rounds the number of sports balls to the nearest integer and converts the result to an integer variable (using as.integer)
 trw_df$`sports_balls` <- 
   as.integer(round(trw_df$`sports_balls`, digits = 0))
+# calculate the median of sportsballs
   Meidan_ball <- median(trw_df$`sports_balls`)
 ```
 
@@ -110,7 +111,7 @@ trw_df$`sports_balls` <-
 # Read 2017 precipitation data, clean names of variable, add a variable as year 2017
 Precp_17 <- 
   readxl::read_excel(path =   "./dataset_import/HealthyHarborWaterWheelTotals2017-9-26.xlsx",sheet = 3, skip = 1) %>% 
-  janitor::clean_names(Precp_17) %>% 
+  janitor::clean_names() %>% 
   filter(total != "NA", month != "NA") %>% 
   mutate(year = 2017)
 
@@ -121,7 +122,7 @@ Precp_16 <- readxl::read_excel(path =   "./dataset_import/HealthyHarborWaterWhee
   mutate(year = 2016)
 
 ## combine datasets and rename the variable:
-Precp <- right_join(Precp_17, Precp_16, by = "month") %>% 
+Precp <- right_join(Precp_17, Precp_16, by = "month") 
   
 names(Precp)[3] <- "Year1"  
 names(Precp)[5] <- "Year2" 
@@ -135,8 +136,16 @@ Precp$month <- as.character(month.name[Precp$month])
 # Combine the new data frame organized.
 Precp_df <- 
   Precp %>% 
-  select(month, Year1, Precipitation1, Year2, Precipitation2)  
-
+  select(month, Year1, Precipitation1, Year2, Precipitation2) 
 
 ```
+
+*key variables*
+- 
+* The number of observations  in 2016 is precpitation data `r nrow(Precp_16)`;
+* The number of observations in 2017 precpitation data is  `r nrow(Precp_17)`;
+
+* The total precipitation in 2017 is  `r sum(Precp_df$Precipitation1)`
+
+* The median number of sports balls in a dumpster in 2016 is `r Meidan_ball`.
 

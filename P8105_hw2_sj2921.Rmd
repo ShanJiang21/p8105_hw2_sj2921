@@ -92,9 +92,11 @@ library(tidyverse)
 library(readxl)
 trw_df <- readxl::read_excel(path =   "./dataset_import/HealthyHarborWaterWheelTotals2017-9-26.xlsx",sheet = 1, range = "A2:N258")
 
+# Clean variable names 
+trw_df <- janitor::clean_names(trw_df)
 # omit rows that do not include dumpster-specific data
 trw_df <- trw_df %>% 
-  filter(trw_df$Dumpster != "NA") 
+  filter(trw_df$dumpster != "NA") 
 
 ```
 

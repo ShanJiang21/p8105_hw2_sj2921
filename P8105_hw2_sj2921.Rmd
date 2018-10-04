@@ -94,11 +94,21 @@ trw_df <- readxl::read_excel(path =   "./dataset_import/HealthyHarborWaterWheelT
 
 # Clean variable names 
 trw_df <- janitor::clean_names(trw_df)
+
 # omit rows that do not include dumpster-specific data
 trw_df <- trw_df %>% 
   filter(trw_df$dumpster != "NA") 
 
+# rounds the number of sports balls to the nearest integer and converts the result to an integer variable (using as.integer)
+trw_df$`sports_balls` <- 
+  as.integer(round(trw_df$`sports_balls`, digits = 0))
+  Meidan_ball <- median(trw_df$`sports_balls`)
+
+
+
 ```
+
+
 
 
 

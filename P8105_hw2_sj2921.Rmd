@@ -113,7 +113,7 @@ Precp_17 <-
   janitor::clean_names() %>% 
   filter(total != "NA", month != "NA") %>% 
   mutate(year = 2017)
-View(Precp_17)
+
 
 # Read 2016 precipitation data, clean names of variable, add a variable as year 2016
 Precp_16 <- readxl::read_excel(path =   "./dataset_import/HealthyHarborWaterWheelTotals2017-9-26.xlsx",sheet = 5, skip = 1 ) %>% 
@@ -138,7 +138,6 @@ Precp_df <-
   Precp %>% 
   select(month, Year1, Precipitation1, Year2, Precipitation2) 
 
-View(Precp_df)
 # calculate the total precipitation in 2017
 sum_17_precp <- sum(Precp_df$Precipitation1, na.rm = TRUE)
 
@@ -147,28 +146,33 @@ Ball_02 <- trw_df %>%
     filter(year == 2016) 
 
 med_sports <- median(Ball_02$`sports_balls`)
-
-
 ```
-*key variables*
+key variables
 - 
 * The number of observations  in 2016 is precpitation data `r nrow(Precp_16)`;
 * The number of observations in 2017 precpitation data is  `r nrow(Precp_17)`;
 * The total precipitation in 2017 is  `r sum_17_precp `;
-* The the median of sportsballs in 2016 is`r med_sports`.
-
+* The the median of sportsballs in 2016 is `r med_sports`.
 
 ##Problem 3
 ```{r}
 library(p8105.datasets)
 
-# Import the BFRSS data 
+# Import the BFRSS data, exclude variables and format the data by using appropriate names.
 brfss_df <- 
   brfss_smart2010 %>% 
     janitor::clean_names() %>% 
     select(-class, -topic, -question, -sample_size, -confidence_limit_low:-geo_location ) 
 
-## Response indicating  the proportion of subjects with each response
+# structure data: Response indicating the proportion of subjects with each response
+Percentage <- 
+  brfss_df  %>%
+  filter(response == "Excellent"  | response == "Very good" | response == "Good" | response == "Fair" | response == "Poor") %>% 
+  spread(key = response, value = data_value) %>% 
+  janitor::clean_names() %>% 
+  mutate(Ex_good = excellent + very_good)
+
+# 
 ```
 
 

@@ -212,7 +212,7 @@ Key Facts of Variables in Mr.Trash and precipitation Data
 * The mean of glass bottles in 2017 is `r mean_plastic`;
 * The sum of cigrette butts for the last five years are `r sum_cig`.
 
-## Problem 3
+Problem 3
 -
 ```{r}
 library(p8105.datasets)
@@ -269,9 +269,10 @@ library(viridis)
 Percentage  %>%
   filter(year == "2002") %>% 
   ggplot(aes(x = excellent )) + 
-  geom_histogram(binwidth = 0.7 ) + 
+  geom_histogram(binwidth = 0.8 ) + 
   labs(title = " Excellent response values in the year 2002",
-       y = "Response value ",
+       x = "Year 2002  No. of excellent value",
+       y = "probability",
        caption = "Data from the BRFSS package"
        ) +
   viridis::scale_fill_viridis(name = "Location", 

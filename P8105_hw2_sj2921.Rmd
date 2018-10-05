@@ -7,10 +7,19 @@ output: github_document
 
 ## Problem 1
 
-- import data from csv file and do some cleaning.
-```{r 1.1, message = FALSE}
+- Set the graph properties(theme, color and size) for ggplot
+```{r 1.0, message = FALSE, echo= FALSE}
 library(tidyverse)
-  
+library(readxl)
+knitr::opts_chunk$set(
+  fig.width = 6,
+  fig.asp = .6,
+  out.width = "90%"
+)
+theme_set(theme_bw() + theme(legend.position = "bottom"))
+```
+- import NYC Transit data from csv file and do some cleaning.
+```{r 1.1, message = FALSE}  
 NYC_Transit <- 
     read_csv(file = "./dataset_import/NYC_Transit_Subway_Entrance_And_Exit_Data.csv")
     NYC_Transit <- janitor::clean_names(NYC_Transit)
@@ -20,8 +29,7 @@ NYC_Transit <-
 NYC_df <- select(NYC_Transit, line, station_name, station_latitude, station_longitude, route1:route11, entry, exit_only, vending, entrance_type, ada)
 
 ```
-
-- Convert the entry variable from character (YES vs NO) to a logical variable
+- **Convert** the entry variable from character (YES vs NO) to a logical variable
 ```{r 1.2}
 # The conversion to logical variable.
 NYC_df$vending <- 
@@ -29,9 +37,9 @@ NYC_df$vending <-
 NYC_df$entry <- 
   ifelse(NYC_Transit$entry == "YES",TRUE, FALSE)
 ```
-* **Brief summary of data**: 
-- NYC Transit Subway Data contains the basic information in NYC metro. 
-- It includes the Subway line(street/avenue), station name, the latitude and longtitude of each station, and the routes existed. 
+* **Brief summary of NYC Transit data**: 
+- **Dimension**: there are 20 columns as variables and 1868 rows as observations in the dataset.
+- NYC Transit Subway Data contains the basic information in NYC metro: it includes the Subway line(street/avenue), station name, the latitude and longtitude of each station, and the routes existed. 
 - Besides, the subset also contains if there is entry or vending for each station, the type of entrance and if it is compliant with Americans with Disabilities Act(ADA).
 
 * **Data cleaning steps**: 
@@ -41,9 +49,7 @@ NYC_df$entry <-
 4. Use `ifelse` to convert the YES/NO data to a logical variable;
 5. Use `filter` or `distinct` to find the info that we need.
 
-* After doing this, the data is basically readable, however, it's not clean enough since there are routes spreaded in the dataframe.
-
-* **Dimension**: there are 20 column as variables and 1868 rows as observations in the dataset.
+* **Data evaluation**: After doing this, the data is basically readable, however, it's not clean enough since there are **11 columns** which contain routes spreaded in the dataframe.
  
 ## Question answers:
 
@@ -110,6 +116,9 @@ trw_df$`sports_balls` <-
   as.integer(round(trw_df$`sports_balls`, digits = 0))
 
 ```
+**Data Overview**: 
+1. There are in total **285** observations and **14** variables in the Mr.Trash Wheel dataframe.
+2. 
 
 * import precipitation data in 2016 & 2017 
 ```{r 2.2}
@@ -147,6 +156,9 @@ Precp_df <-
 # calculate the total precipitation in 2017
 sum_17_precp <- sum(Precp_df$Precipitation1, na.rm = TRUE)
 
+# calculate the total precipitation in 2016
+sum_16_precp <- sum(Precp_df$Precipitation2, na.rm = TRUE)
+
 # calculate the median of sportsballs in 2016
 Ball_02 <- trw_df %>% 
     filter(year == 2016) 
@@ -155,7 +167,7 @@ med_sports <- median(Ball_02$`sports_balls`)
 
 ```
 
-Some other summary of data...
+Some other summary for Mr.Trash.wheel Dataframe...
 ```{r}
 # Mean of Plastic bottles collected in 2017. 
 sum_trw <- 
@@ -181,9 +193,10 @@ key variables
 * The number of observations  in 2016 is precpitation data `r nrow(Precp_16)`;
 * The number of observations in 2017 precpitation data is  `r nrow(Precp_17)`;
 * The total precipitation in 2017 is  `r sum_17_precp `;
-* The median of sportsballs in 2016 is `r med_sports`.
+* The total precipitation in 2016 is  `r sum_16_precp `;
+* The median of sportsballs in 2016 is `r med_sports`;
 * The total weight of dumpster in 2017 is `r sum_weight`;
-* The mean of glass bottles in 2017 is `r mean_plastic`.
+* The mean of glass bottles in 2017 is `r mean_plastic`;
 * The sum of cigrette butts for the last five years are `r sum_cig`.
 
 # Problem 3

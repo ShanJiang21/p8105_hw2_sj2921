@@ -66,7 +66,7 @@ ADA_no <- NYC_df %>%
 ```
 
 ```{r}
-# The propotion of station entrances/exits without vending allow entrance is 3.77%
+# The propotion of station entrances/exits without vending allow entrance is 37.7%
 No_vd <- NYC_df %>% 
    filter(vending == FALSE) %>%
    filter(entry == TRUE) 
@@ -116,9 +116,13 @@ trw_df$`sports_balls` <-
   as.integer(round(trw_df$`sports_balls`, digits = 0))
 
 ```
-**Data Overview**: 
+**Mr.Trash Wheel Data Overview**: 
+```{r}
+str(trw_df)
+```
+
 1. There are in total **285** observations and **14** variables in the Mr.Trash Wheel dataframe.
-2. Key variables included are month, 
+2. Key variables included are month, weight and volume of the dumpster, and the various types of trash collected in dumpster. 
 
 * import precipitation data in 2016 & 2017 
 ```{r 2.2}
@@ -145,11 +149,13 @@ names(Precp)[5] <- "Year2"
 
 names(Precp)[2] <- "Precipitation1"
 names(Precp)[4] <- "Precipitation2"
-
+```
+Month Variable Coversion and Precipitation summary
+```{r 2.4}
 # convert month to a character variable (the variable month.name is built into R and should be useful).
 Precp$month <- as.character(month.name[Precp$month])
 
-# Combine the new data frame organized.
+# organize the new data frame in a new order.
 Precp_df <- 
   Precp %>% 
   select(month, Year1, Precipitation1, Year2, Precipitation2) 
@@ -188,14 +194,20 @@ weight_17 <- trw_df %>%
 sum_weight <- sum(weight_17$weight_tons)
 
 ```
+**Precipitation Data Overview**: 
+```{r}
+str(Precp_df)
+```
+1. There are in total **12 observations** and 3 variables in the 2017 precipitation data, also 12 observations and 3 variables for 2016. After a join operation was carried, the total variables become 5 as the month is key to join, there are no NAs in the dataframe.
+2. Key variables are month in each year and total precipitation in each year.
 
-key variables
+Key Facts of Variables in Mr.Trash and precipitation Data
 - 
 * The number of observations  in 2016 is precpitation data `r nrow(Precp_16)`;
 * The number of observations in 2017 precpitation data is  `r nrow(Precp_17)`;
-* The total precipitation in 2017 is  `r sum_17_precp `;
+* The **total precipitation in 2017** is  `r sum_17_precp `;
 * The total precipitation in 2016 is  `r sum_16_precp `;
-* The median of sportsballs in 2016 is `r med_sports`;
+* The median of sportsballs in 2016 is **`r med_sports`**;
 * The total weight of dumpster in 2017 is `r sum_weight`;
 * The mean of glass bottles in 2017 is `r mean_plastic`;
 * The sum of cigrette butts for the last five years are `r sum_cig`.
@@ -243,8 +255,8 @@ excellent <-
 med_excel <- median(excellent$data_value, na.rm = TRUE)
 ```
 ## Question answers
-1. There are `r nrow(unique_lc)` distinct locations in the dataset; 
-2. Every state is represented as 51 distinct values are included for states; 
+1. There are **`r nrow(unique_lc)`** distinct locations in the dataset; 
+2. Every state is represented as **51** distinct values are included for states; 
 3. **New Jersey** is observed most. 
 4. In 2002, the median of the “Excellent” response value is **`r med_excel`**.
 
@@ -278,7 +290,7 @@ Percentage  %>%
   labs(
     title = " Proportion of Excellent response values in New York County and Queens from 2002 to 2010",
     x = "Year",
-    y = "Number of excellent (n)",
+    y = "Proportion of excellent response (%)",
     caption = "Data from the BRFSS package"
   ) + 
     scale_color_hue(name = "Location",

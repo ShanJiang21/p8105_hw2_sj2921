@@ -103,6 +103,12 @@ trw_df <- trw_df %>%
 trw_df$`sports_balls` <- 
   as.integer(round(trw_df$`sports_balls`, digits = 0))
 
+#calculate the total weight of gabbages in the year of 2017
+weight_17 <- trw_df %>% 
+  filter(year != 2017) 
+  
+sum(weight_17$weight_tons)
+
 ```
 
 * import precipitation data in 2016 & 2017 
@@ -151,6 +157,7 @@ key variables
 - 
 * The number of observations  in 2016 is precpitation data `r nrow(Precp_16)`;
 * The number of observations in 2017 precpitation data is  `r nrow(Precp_17)`;
+* The total weight  of dumpster in 2017 is ` r sum(weight_17$weight_tons)`;
 * The total precipitation in 2017 is  `r sum_17_precp `;
 * The the median of sportsballs in 2016 is `r med_sports`.
 
@@ -177,10 +184,14 @@ Percentage <-
 brfss_df %>% 
    distinct(., locationabbr, .keep_all = TRUE)
 
-
-
+# The most observed one in the dataframe is FL.
+brfss_df %>% 
+  group_by(locationabbr) %>% 
+  summarize(n = n()) 
+  
 
 # In 2002, what is the median of the “Excellent” response value
+  
 ```
 
 

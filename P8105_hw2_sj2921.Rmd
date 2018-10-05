@@ -37,7 +37,7 @@ NYC_df$vending <-
 NYC_df$entry <- 
   ifelse(NYC_Transit$entry == "YES",TRUE, FALSE)
 ```
-* **Brief summary of NYC Transit data**: 
+### **Brief summary of NYC Transit data**: 
 - **Dimension**: there are 20 columns as variables and 1868 rows as observations in the dataset.
 - NYC Transit Subway Data contains the basic information in NYC metro: it includes the Subway line(street/avenue), station name, the latitude and longtitude of each station, and the routes existed. 
 - Besides, the subset also contains if there is entry or vending for each station, the type of entrance and if it is compliant with Americans with Disabilities Act(ADA).
@@ -212,7 +212,7 @@ Key Facts of Variables in Mr.Trash and precipitation Data
 * The mean of glass bottles in 2017 is `r mean_plastic`;
 * The sum of cigrette butts for the last five years are `r sum_cig`.
 
-# Problem 3
+## Problem 3
 -
 ```{r}
 library(p8105.datasets)

@@ -217,9 +217,7 @@ brfss_df %>%
 # Get an order by using group summary: NJ is observed most.
 States <- brfss_df %>% 
   group_by(locationabbr) %>% 
-  summarize(n = n())
-
-States %>% 
+  summarize(n = n()) %>% 
   mutate(freq_ranking = min_rank(desc(n))) %>% 
   filter(min_rank(desc(n)) < 2)
 
@@ -235,6 +233,7 @@ med_excel <- median(excellent$data_value, na.rm = TRUE)
 2. Every state is represented as 51 distinct values are included for states; 
 3. **New Jersey** is observed most. 
 4. In 2002, the median of the “Excellent” response value is **`r med_excel`**.
+
 
 Graph for the BFRSS dataset  
 -

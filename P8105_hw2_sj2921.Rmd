@@ -34,9 +34,12 @@ Besides, the subset also contains if there is entry or vending for each station,
 
 * **Data cleaning steps**: 
 1. Import data from selected sheet;
-2. Use `Janitor:: clean names` as efficient way to clean variable names;
-3. Adopt the select to retain the variables in need.
-After doing this, the data is basically readable, however, it's not clean enough.
+2. Use `Janitor:: clean names` as efficient way to clean variable names, as the r is case sensitive;
+3. Adopt the `select` to retain the variables in need;
+4. Use `ifelse` to convert the YES/NO data to a logical variable;
+5. Use `filter` or `distinct` to find the info that we need.
+
+* After doing this, the data is basically readable, however, it's not clean enough since there are routes spreaded in the dataframe.
 
 * **Dimension**: there are 20 column as variables and 1868 rows as observations in the dataset.
  
@@ -94,7 +97,7 @@ trw_df <-
     readxl::read_excel(path =   "./dataset_import/HealthyHarborWaterWheelTotals2018-7-28.xlsx",sheet = 1, range = "A2:N338") %>% # Clean variable names  
     janitor::clean_names() %>% 
     # omit rows that do not include dumpster-specific data
-    filter(trw_df$dumpster != "NA") 
+    filter(dumpster != "NA") 
 
 # rounds the number of sports balls to the nearest integer and converts the result to an integer variable (using as.integer)
 trw_df$`sports_balls` <- 
@@ -172,7 +175,7 @@ key variables
 * The number of observations  in 2016 is precpitation data `r nrow(Precp_16)`;
 * The number of observations in 2017 precpitation data is  `r nrow(Precp_17)`;
 * The total precipitation in 2017 is  `r sum_17_precp `;
-* The the median of sportsballs in 2016 is `r med_sports`.
+* The median of sportsballs in 2016 is `r med_sports`.
 * The total weight of dumpster in 2017 is `r sum_weight`;
 * The mean of glass bottles in 2017 is `r mean_plastic`.
 * The sum of cigrette butts for the last five years are `r sum_cig`.
@@ -197,7 +200,11 @@ Percentage <-
 # create a new variable showing the proportion of responses that were “Excellent” or “Very Good”
   mutate(Exl_good = excellent + very_good) 
 
-# unique locations: Every state is represented in the dataset as there are 51 distinct states in the dataframe.
+# unique locations: 
+unique_lc <- brfss_df %>% 
+   distinct(., locationdesc, .keep_all = TRUE)
+
+#Every state is represented in the dataset as there are 51 distinct states in the dataframe.
 brfss_df %>% 
    distinct(., locationabbr, .keep_all = TRUE)
 
@@ -210,54 +217,71 @@ States %>%
   mutate(freq_ranking = min_rank(desc(n))) %>% 
   filter(min_rank(desc(n)) < 2)
 
-
-# In 2002, what is the median of the “Excellent” response value
-  excellent <- brfss_df %>% 
+# In 2002, the median of the “Excellent” response value: 23.6.
+excellent <- 
+  brfss_df %>% 
   filter(response == "Excellent" & year == "2002") 
 
+med_excel <- median(excellent$data_value, na.rm = TRUE)
 ```
+1. There are `r nrow(unique_lc)` distinct locations in the dataset; Every state is represented as 51 distinct values are included for states; NJ is observed most. 
+2. In 2002, the median of the “Excellent” response value is `r med_excel`.
+
 Graph for the BFRSS dataset  
 -
 ```{r}
- 
+library(viridis)
 ## Histrogram of Excellent Response in the Year of 2002
 Percentage  %>%
   filter(year == "2002") %>% 
-  ggplot(aes(x = excellent)) + 
-  geom_histogram(binwidth = 0.5 ) + 
+  ggplot(aes(x = excellent )) + 
+  geom_histogram(binwidth = 0.7 ) + 
   labs(title = " Excellent response values in the year 2002",
        x = "Year 2002",
        y = "Response value ",
        caption = "Data from the BRFSS package"
        ) +
+  viridis::scale_fill_viridis(name = "Location", 
+    discrete = TRUE
+  ) +
   theme(legend.position = "bottom")
 
-ggsave("histogram in 2002.png")
+ggsave("histogram of response value in 2002.png")
 
 ## Response as of excellent from year 2002 to 2010
 Percentage  %>%
     filter(locationdesc == "NY - New York County" | locationdesc == "NY - Queens County") %>%
     ggplot(aes(x = year, y = excellent)) + 
     geom_smooth(se = FALSE) +
-    geom_point(aes(color = locationdesc), alpha = .5) +
+    geom_point(aes(color = locationdesc), alpha = .7) +
   labs(
     title = " Proportion of Excellent response values in New York County and Queens from 2002 to 2010",
     x = "Year",
     y = "Number of excellent (n)",
     caption = "Data from the BRFSS package"
   ) + 
-    scale_color_hue(name = "Location", 
+    scale_color_hue(name = "Location",
+                   h = c(100, 300)
                  ) +
   facet_grid(. ~locationdesc)
-  
 
-ggsave("proportion.pdf")
+ggsave("02_10NYC_proportion.png")
 
+#summary for plots 
+df_nyc <- 
+  filter(Percentage, locationdesc == "NY - New York County")
+
+mean_nyc <- round(mean(df_nyc$excellent), digits = 0)
+
+df_qus <- 
+  filter(Percentage, locationdesc == "NY - Queens County")
+
+mean_qus <- round(mean(df_qus$excellent), digits = 0)
 ```
-* In the scatter plot, we can see that the NY-New York County gets more excellent response from the 2002 to 2010 than that of the NY-Queens County as the NY-New York County has a mean of `{} `
+* In the scatter plot, we can see that the NY-New York County gets more excellent response from the 2002 to 2010 than that of the NY-Queens County as the NY-New York County has a mean of `r  mean_nyc` , Queens County has a mean of `r mean_qus`, there exists a gap between the two locations.
 
+* Also, the trend of response value shown in the graph: NYC county residents presents a sharp decrease in response value in excellent while the Queens citizens are showing a fast growing trend from 2008 to 2010, so the gap beween the two is narrowing. 
 
-```
 
 
 

@@ -107,7 +107,7 @@ trw_df$`sports_balls` <-
 weight_17 <- trw_df %>% 
   filter(year != 2017) 
   
-sum(weight_17$weight_tons)
+sum_weight <- sum(weight_17$weight_tons)
 
 ```
 
@@ -152,16 +152,31 @@ Ball_02 <- trw_df %>%
     filter(year == 2016) 
 
 med_sports <- median(Ball_02$`sports_balls`)
+
+# Mean of Plastic bottles collected in 2017. 
+sum_trw <- 
+  trw_df %>% 
+     filter(year == 2017)  
+
+mean_plastic <- mean(sum_trw$plastic_bottles)
+mean_plastic <- round(mean_plastic, digits = 0)
+
+# sum of cigarette butts in the total period.
+sum_cig <- sum(trw_df$cigarette_butts, na.rm = TRUE)
+
 ```
 key variables
 - 
 * The number of observations  in 2016 is precpitation data `r nrow(Precp_16)`;
 * The number of observations in 2017 precpitation data is  `r nrow(Precp_17)`;
-* The total weight  of dumpster in 2017 is ` r sum(weight_17$weight_tons)`;
 * The total precipitation in 2017 is  `r sum_17_precp `;
 * The the median of sportsballs in 2016 is `r med_sports`.
+* The total weight of dumpster in 2017 is `r sum_weight`;
+* The mean of glass bottles in 2017 is `r mean_plastic`.
+* The sum of cigrette butts for the last five years are `r sum_cig`.
 
-##Problem 3
+#Problem 3
+-
 ```{r}
 library(p8105.datasets)
 
@@ -191,7 +206,52 @@ brfss_df %>%
   
 
 # In 2002, what is the median of the “Excellent” response value
-  
+  excellent <- brfss_df %>% 
+  filter(response == "Excellent" & year == "2002") 
+
 ```
+Graph for the BFRSS dataset  
+-
+```{r}
+ 
+## Histrogram of Excellent Response in the Year of 2002
+Percentage  %>%
+  filter(year == "2002") %>% 
+  ggplot(aes(x = excellent)) + 
+  geom_histogram(binwidth = 0.5 ) + 
+  labs(title = " Excellent response values in the year 2002",
+       x = "Year 2002",
+       y = "Response value ",
+       caption = "Data from the BRFSS package"
+       ) +
+  theme(legend.position = "bottom")
+
+ggsave("histogram in 2002.png")
+
+## Response as of excellent from year 2002 to 2010
+Percentage  %>%
+    filter(locationdesc == "NY - New York County" | locationdesc == "NY - Queens County") %>%
+    ggplot(aes(x = year, y = excellent)) + 
+    geom_smooth(se = FALSE) +
+    geom_point(aes(color = locationdesc), alpha = .5) +
+  labs(
+    title = " Proportion of Excellent response values in New York County and Queens from 2002 to 2010",
+    x = "Year",
+    y = "Number of excellent (n)",
+    caption = "Data from the BRFSS package"
+  ) + 
+    scale_color_hue(name = "Location", 
+                 ) +
+  facet_grid(. ~locationdesc)
+  
+
+ggsave("proportion.pdf")
+
+```
+* In the scatter plot, we can see that the NY-New York County gets more excellent response from the 2002 to 2010 than that of the NY-Queens County as the NY-New York County has a mean of `{} `
+
+
+```
+
 
 

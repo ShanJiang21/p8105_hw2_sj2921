@@ -118,7 +118,7 @@ trw_df$`sports_balls` <-
 ```
 **Data Overview**: 
 1. There are in total **285** observations and **14** variables in the Mr.Trash Wheel dataframe.
-2. 
+2. Key variables included are month, 
 
 * import precipitation data in 2016 & 2017 
 ```{r 2.2}
@@ -128,8 +128,9 @@ Precp_17 <-
   janitor::clean_names() %>% 
   filter(total != "NA", month != "NA") %>% 
   mutate(year = 2017)
-
-
+```
+Combine the datasets in 2016 and 2017
+```{r 2.3}
 # Read 2016 precipitation data, clean names of variable, add a variable as year 2016
 Precp_16 <- readxl::read_excel(path =   "./dataset_import/HealthyHarborWaterWheelTotals2017-9-26.xlsx",sheet = 5, skip = 1 ) %>% 
   janitor::clean_names() %>% 

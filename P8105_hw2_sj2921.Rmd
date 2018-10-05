@@ -43,23 +43,25 @@ Besides, the subset also contains if there is entry or vending for each station,
 
 * **Dimension**: there are 20 column as variables and 1868 rows as observations in the dataset.
  
-## Question (Problem1.1):
+## Question answers:
+Distinct stations in the dataset as of 465;
 ```{r 1.3}
-# Distinct stations in the dataset as of 465;
 stations <- nrow(distinct(NYC_df, line, station_name))
-
+```
 # stations are ADA compliant as of 84;
+```{r}
 ADA_no <- NYC_df %>% 
    filter(NYC_df$ada == TRUE) %>%
    distinct(line, station_name) 
-
-
+```
 # The propotion of station entrances/exits without vending allow entrance is 3.94%
+```{r}
 No_vd <- NYC_df %>% 
-   filter(NYC_df$vending == FALSE) %>%
+   filter(vending == FALSE) %>%
    filter(entry == TRUE) 
 Percent <- (nrow(No_vd) / sum(NYC_df$entry))
 ```
+
 1. According to above, there are `r stations` distinct stations in NYC. 
 2. Also, through filtering we can know that there are `r nrow(ADA_no)` stations which are ADA compliant.
 3. The proportion of station entrances/exits without vending allow entrance is `r Percent`.
@@ -240,7 +242,6 @@ Percentage  %>%
   ggplot(aes(x = excellent )) + 
   geom_histogram(binwidth = 0.7 ) + 
   labs(title = " Excellent response values in the year 2002",
-       x = "Year 2002",
        y = "Response value ",
        caption = "Data from the BRFSS package"
        ) +
